@@ -37,8 +37,3 @@ def quick_sort(list, begin=None, end=None):
     pivot = partition(list, begin, end)
     quick_sort(list, begin, pivot-1)
     quick_sort(list, pivot+1, end)
-
-list = [4,1,2,3,8,9,6]
-# list = [3,5,4,1,2]
-quick_sort(list)
-print list
