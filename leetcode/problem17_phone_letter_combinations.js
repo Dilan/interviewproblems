@@ -22,31 +22,38 @@ var letters = function(digit) {
         '7': 'pqrs',
         '8': 'tuv',
         '9': 'wxyz',
-        '0': ''
+        '0': ' '
     };
     return hm[digit].split('');
 };
 
-var letterCombinations = function(digits) {
-    digits = digits.toString().split('');
-    
-    if (digits.length === 0) {
-        return [];
+var letterCombinations = (str, k, result) => {
+    if (str.length-1 < k) {
+        return;
     }
+    var chars = [...letters(str[k])];
     
-    var result = letters(digits.shift());
-    while (digits.length > 0) { 
-        var ls = letters(digits.shift());
-        var tmp = [];
-        for(var i = 0; i < result.length; i++) {
-            for(var j=0; j < ls.length; j++) {
-                tmp.push(result[i] + ls[j]);
+    if (k === 0) {
+        result.splice(0, 0, ...chars);
+    } else {
+        var len = result.length;
+        var next = len;
+        for(var j=0; j<len; j++) {
+            var tmp = result[j];
+            for(var i=0; i<chars.length; i++) {
+                result[ (i === 0 ? j : next++)  ] = tmp + chars[i];
             }
         }
-        result = tmp;
     }
+    letterCombinations(str, k+1, result);
+};
+
+var solution = (val) => {
+    var result = [];
+    letterCombinations(val, 0, result);
     return result;
 };
 
-var result = letterCombinations('23');
-console.log(result);
+var assert = require('assert');
+assert.equal(solution('23').toString(), 'ad,bd,cd,ae,af,be,bf,ce,cf');
+assert.equal(solution('90').toString(), 'w ,x ,y ,z ');

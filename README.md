@@ -1,10 +1,13 @@
 InterviewProblems
 =================
 
-Interesting problems from hackerrank.com and other resources.
+# leetcode.com
 
-Tests
------
+
+# hackerrank.com
+
+
+# tests
 
     $ python -m unittest test.test_sort_quick_sort
 
