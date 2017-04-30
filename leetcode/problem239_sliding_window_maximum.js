@@ -23,7 +23,7 @@ var maxSlidingWindow = function(nums, k) {
     const result = [];
 
     for(let idx=0; idx<nums.length; idx++) {
-        if (deque.length == k) { deque.shift(); }
+        if (deque.length && (idx-deque[0]) == k) { deque.shift(); }
         while(deque.length && nums[deque[deque.length-1]] < nums[idx]) {
             deque.pop();
         }
@@ -38,4 +38,5 @@ var maxSlidingWindow = function(nums, k) {
 var assert = require('assert');
 assert.deepEqual(maxSlidingWindow([1,3,-1,-3,5,3,6,7], 3), [3,3,5,5,6,7]);
 assert.deepEqual(maxSlidingWindow([5,4,3,2,1,8,0], 2), [5,4,3,2,8,8]);
-
+assert.deepEqual(maxSlidingWindow([1,3,1,2,0,5], 3), [3,3,2,5]);
+assert.deepEqual(maxSlidingWindow([1,2,3,4,5,6], 3), [3,4,5,6]);
