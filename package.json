@@ -1,0 +1,8 @@
+{
+    "name": "interviewproblems",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "test": "for file in ./leetcode/*.js; do echo $file; node $file 2>/dev/null; done"
+    }
+}
