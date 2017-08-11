@@ -1,4 +1,7 @@
+# https://www.interviewcake.com/question/python/second-largest-item-in-bst
+
 # Write a function to find the 2nd largest element in a binary search tree.
+
 def second_largest(node):
     list = dfs_largest(node)
     last = list[len(list) - 1]
@@ -24,22 +27,16 @@ def create_tree(list):
             hm[left] = { 'value': left, 'right': None, 'left': None }
         if right is not None and right not in hm:
             hm[right] = { 'value': right, 'right': None, 'left': None }
-        
-        hm[value]['left'] = hm[left] 
+
+        hm[value]['left'] = hm[left]
         hm[value]['right'] = hm[right] if right in hm else None
 
     return hm
 
-def asset_equal(a, b):
-    if a == b:
-        print 'test pass.'
-    else:
-        print 'test fail: ', a, ' is not equal to ', b
-
 # test [1]
-hm = create_tree([[50,30,80], [30,20,40], [80,60,90]])
-asset_equal(80, second_largest(hm[50]))
+bst = create_tree([[50,30,80], [30,20,40], [80,60,90]])
+assert 80 == second_largest(bst[50])
 
 # test [2]
-hm = create_tree([[50,30,80], [30,20,40], [80,60]])
-asset_equal(60, second_largest(hm[50]))
+bst = create_tree([[50,30,80], [30,20,40], [80,60]])
+assert 60 == second_largest(bst[50])
