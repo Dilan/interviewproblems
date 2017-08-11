@@ -3,6 +3,15 @@
 # https://cmind.kattis.com/problems/coast
 
 # You will be given a map of Soteholm as an N×M grid.
+
+#         N
+#  ~   ~  ~   ~
+#  ~   __ __  ~
+#  ~  |__|__| ~    M
+#  ~  |__| ~  __
+#  ~   ~   ~ |__|
+#  ~   ~  ~   ~
+
 # Each square in the grid has a side length of 1 km and is either water or land.
 # Your goal is to compute the total length of sea coast of all islands.
 # Sea coast is all borders between land and sea, and sea is any water connected
@@ -57,3 +66,13 @@ def calculate_coast_length(input):
                         counter +=1
 
     return counter
+
+if __name__ == '__main__':
+    print(
+        calculate_coast_length([
+            "00011",
+            "01101",
+            "01001",
+            "00110"
+        ])
+    )

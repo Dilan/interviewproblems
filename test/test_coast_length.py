@@ -1,5 +1,5 @@
 import unittest
-from kattis.coast import calculate_coast_length
+from coast_length import calculate_coast_length
 
 class Problem_Coast_Test(unittest.TestCase):
 
