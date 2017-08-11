@@ -1,7 +1,3 @@
-import os
-import sys
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-
 from lib.stack import Stack
 
 class HanoiStack(Stack):
@@ -28,9 +24,11 @@ def solution(items):
     source = HanoiStack(items)
     destination = HanoiStack([])
     tmp = HanoiStack([])
-    
+
     move(len(items), source, tmp, destination)
-    
-    print('Destination:', destination.list)
-    
-    return True
+
+    return destination.list
+
+if __name__ == '__main__':
+    print("Destination:")
+    print(solution([5,4,3,2,1]))
