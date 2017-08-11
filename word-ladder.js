@@ -1,20 +1,25 @@
-var alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
+/**
+    https://leetcode.com/problems/word-ladder/description/
+
+    Given two words (beginWord and endWord), and a dictionary's word list,
+    find the length of shortest transformation sequence from beginWord to endWord, such that:
+
+    Only one letter can be changed at a time.
+    Each transformed word must exist in the word list. Note that beginWord is not a transformed word.
+    For example,
+
+    beginWord = "hit"
+    endWord = "cog"
+    wordList = ["hot","dot","dog","lot","log","cog"]
+    As one shortest transformation is "hit" -> "hot" -> "dot" -> "dog" -> "cog",
+    return its length 5
+*/
 
 var startNodeId = "hit";
 var endNodeId = "cog";
-var dictionaryList = ["hit", "hot","dot","dog","lot","log","cog"];
-
-var net = createNet(dictionaryList);
-net.nodes[startNodeId].weight = 0;
-
-start(startNodeId, net, endNodeId);
-
-console.log("");
-console.log("Shortest weight: " + net.findById(endNodeId).weight);
-console.log("Path: " + findBackStep(endNodeId, net, startNodeId).reverse().join(' -> '));
-console.log("");
-
-// =============================================================================
+var dictionaryList = ["hot","dot","dog","lot","log","cog"];
+var result = ladderLength(startNodeId, endNodeId, dictionaryList);
+console.log(result);
 
 function Node(id) {
     this.id = id;
@@ -33,37 +38,45 @@ function Net(id) {
 function createNet(dictionaryList) {
     var net = new Net();
 
-    var dict = {}
+    var hmask = {}
     dictionaryList.forEach(function(word) {
-        dict[word] = true;
+        var k, mask = word.split('');
+        mask.forEach(function(l, idx) {
+            mask[idx] = '*';
+            k = mask.join('');
+            if (typeof hmask[k] == 'undefined') {
+                hmask[k] = [word];
+            } else {
+                hmask[k].push(word);
+            }
+            mask[idx] = l;
+        });
     });
 
-    dictionaryList.forEach(function(id1) {
-        get_neighbors(id1, dict).forEach((id2) => {
-            var initNode = function(id, neighborId, weight) {
-                var node, neighbor = new Neighbor(neighborId, weight);
+    var initNode = function(id, neighborId, weight) {
+        var node, neighbor = new Neighbor(neighborId, weight);
 
-                if(null == (node = net.findById(id))) {
-                    node = net.createNode(id, neighbor);
-                } else {
-                    node.neighbors.push(neighbor);
-                }
-            };
-            initNode(id1, id2, 1);
-            initNode(id2, id1, 1);
-        })
-    });
-    return net;
-}
+        if(null == (node = net.findById(id))) {
+            node = net.createNode(id, neighbor);
+        } else {
+            node.neighbors.push(neighbor);
+        }
+    };
 
-function get_neighbors(word, dict) {
-    var neighbors = []
-    get_all_possible_neighbors(word).forEach(key => {
-        if(dict[key]) {
-            neighbors.push(key);
+    var dict = {}
+    Object.keys(hmask).forEach(m => {
+        var neighbors = hmask[m]
+        var id1, id2;
+        for(var i=0; i<neighbors.length; i++) {
+            id1 = neighbors[i];
+            for(var j=i+1; j<neighbors.length; j++) {
+                id2 = neighbors[j]
+                initNode(id1, id2, 1);
+                initNode(id2, id1, 1);
+            }
         }
     });
-    return neighbors;
+    return net;
 }
 
 function Neighbor(id, weight) {
@@ -89,22 +102,7 @@ function Net() {
             this.visibleButUnVisited.push(id);
         }
     }
-
     this.visibleButUnVisited = [];
-}
-
-function get_all_possible_neighbors(word) {
-    var keys = []
-    word.split('').forEach(function(l, idx) {
-        var mask = word.split('');
-        alphabet.forEach(function(letter) {
-            if (letter != l) {
-                mask[idx] = letter
-                keys.push(mask.join(''))
-            }
-        })
-    })
-    return keys
 }
 
 function start(nodeId, net, endNodeId) {
@@ -143,16 +141,29 @@ function start(nodeId, net, endNodeId) {
     return net;
 }
 
-function findBackStep(nodeId, net, startNodeId) {
-    if(startNodeId == nodeId) { return [nodeId]; }
+function findBackStepList(nodeId, net, startNodeId, path=[], result=[]) {
+    path.push(nodeId);
 
-    var nextId, neighbor;
+    if (nodeId == startNodeId) {
+        return result.push(path);
+    } else if (!net.findById(nodeId)) {
+        return [];
+    }
+
     for(var i=0; i < net.findById(nodeId).neighbors.length; i++) {
         neighbor = net.findById(nodeId).neighbors[i];
         if(net.findById(nodeId).weight - neighbor.weight == net.findById(neighbor.id).weight) {
-            nextId = neighbor.id;
-            break;
+            findBackStepList(neighbor.id, net, startNodeId, path.slice(), result);
         }
     }
-    return [nodeId].concat(findBackStep(nextId, net, startNodeId));
+    return result;
 }
+
+function ladderLength(beginWord, endWord, wordList) {
+    wordList.push(beginWord);
+    var net = createNet(wordList);
+    net.nodes[beginWord].weight = 0;
+    start(beginWord, net, endWord);
+    var result = findBackStepList(endWord, net, beginWord);
+    return result.length ? result[0].length : 0
+};
