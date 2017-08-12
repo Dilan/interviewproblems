@@ -1,5 +1,5 @@
 import unittest
-from leetcode.problem218_skyline import skyline
+from skyline import skyline
 
 class Problem_Leetcode_Skyline_Test(unittest.TestCase):
 
