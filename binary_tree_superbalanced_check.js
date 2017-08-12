@@ -1,3 +1,8 @@
+/*
+ Write a function to see if a binary tree - is "superbalanced" (a new tree property we just made up).
+ A tree is "superbalanced" if the difference between the depths of any two leaf nodes is no greater than one.
+*/
+
 function BinaryTreeNode(value) {
     this.depth = null;
     this.value = value;
@@ -110,9 +115,3 @@ var assertEquals = function(a, b) {
     var data = [[8,3,10], [3,1,6], [6,4,7]];
     assertEquals(isSuperBalanced(createTree(data)), false);
 })();
-
-
-/*
- Write a function to see if a binary tree - is"superbalanced" (a new tree property we just made up).
- A tree is "superbalanced" if the difference between the depths of any two leaf nodes is no greater than one.
-*/
