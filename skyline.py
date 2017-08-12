@@ -27,7 +27,7 @@ def skyline(input):
         return []
 
     # fix [x1, x2, height] --> [x1, height, x2]
-    for line in input: 
+    for line in input:
         line[1],line[2] = line[2],line[1]
 
     hm = {}
@@ -40,8 +40,6 @@ def skyline(input):
 
         if item[2] not in hm:
             hm[item[2]] = 0
-
-    print('...',hm)
 
     output = []
     for x in range(min(hm.keys()), max(hm.keys())+1):
@@ -59,10 +57,6 @@ def skyline(input):
     return output
 
 
-print skyline([ [0,7,10] ])
-
-# print skypine([[ 2,9,10],[3,7,15],[5,12,12],[15,20,10],[19,24,8]])
-# [[2, 10], [3, 15], [7, 12], [12, 0], [15, 10], [20, 8], [24, 0]]
-
-# print skypine([ [1,11,5], [2,6,7], [3,13,9], [12,7,16]])
-# print skypine([ [1,11,5], [2,6,7], [3,13,9], [12,7,16], [14,3,25], [19,18,22], [23,13,29], [24,4,28] ])
+print skyline([[ 2,9,10],[3,7,15],[5,12,12],[15,20,10],[19,24,8]])
+print skyline([ [1,11,5], [2,6,7], [3,13,9], [12,7,16]])
+print skyline([ [1,11,5], [2,6,7], [3,13,9], [12,7,16], [14,3,25], [19,18,22], [23,13,29], [24,4,28] ])
