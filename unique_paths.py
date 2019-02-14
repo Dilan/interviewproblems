@@ -7,52 +7,24 @@
 
 class Solution(object):
     def uniquePaths(self, m, n):
-        mx = [] # init each node by (value, inputs, visited)
-        for j in range(n):
-            if j == 0:
-                mx.append([(0,1,0)] * m)
-                mx[0][0] = (1,0,-1)
-            else:
-                mx.append([(0,2,0)] * m)
-                mx[j][0] = (0,1,0)
+        mx = [[1] * n]
+        for j in range(1,m):
+            mx.append([0] * n)
 
-        # start DFS for (0,0)
-        Solution.dfs(mx, 0, 0, 0)
-        
-        return mx[n-1][m-1][0]
+        for j in range(1, len(mx)):
+            row = mx[j]
+            for i, val in enumerate(row):
+                left_value = mx[j][i-1] if i-1 >= 0 else 0
+                top_value = mx[j-1][i] if j-1 >= 0 else 0
 
-    @staticmethod
-    def dfs(mx, x, y, val):
-        value, inputs, visited = mx[y][x]
-        mx[y][x] = (value+val, inputs, visited+1)
+                mx[j][i] = left_value + top_value
 
-        value, inputs, visited = mx[y][x]
-        if inputs == visited:
-            movements = Solution.movements(mx, x, y)
-            for move in movements:
-                i, j = move(x, y)
-                Solution.dfs(mx, i, j, value)
-
-    @staticmethod
-    def movements(mx, x, y):
-        arr = []
-        if x+1 < len(mx[0]):
-            arr.append(Solution.right)
-        if y+1 < len(mx):
-            arr.append(Solution.down)
-        return arr
-
-    @staticmethod
-    def right(x,y):
-        return (x+1,y)
-    @staticmethod
-    def down(x,y):
-        return (x,y+1)
+        return mx[m-1][n-1]
 
 # CLI
 if __name__ == '__main__':
     arr = [
-        (3,2), (7,3),
+        (3,2), (7,3),(100,100),(1000,1000)
     ]
     for data in arr:
         m,n = data
