@@ -26,7 +26,6 @@ class WordDictionary(object):
                 for idx, n in enumerate(nodes[:]):
                     if (idx == 0):
                         nodes = []
-
                     nodes += n.children.values()
             else:
                 idx = 0
