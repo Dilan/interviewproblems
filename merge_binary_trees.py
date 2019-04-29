@@ -1,7 +1,7 @@
 # Merge Two Binary Trees
 
 #  Tree 1           Tree 2        ->  Merged tree
-#           1               2            	     3
+#           1               2                    3
 #          / \             / \                  / \
 #         3   2           1   3                4   5
 #        /                \   \               / \   \
