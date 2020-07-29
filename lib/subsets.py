@@ -2,20 +2,20 @@ class Solution(object):
     def subsets(self, nums):
         result = [[]]
         for num in nums:
-            for arr in result[:]:
-                result.append([num]+arr)
+            result += [[num] + arr for arr in result]
         return result
 
-    def subset_recursion(self, list):
-        if len(list) == 1:
-            return [list]
+    def subsets_dfs(self, nums):
+        res = []
+        self.dfs([], res, 0, nums)
+        return res
 
-        result = [[list[0]]]
-        for s in self.subset_recursion(list[1:]):
-            result.append(s)
-            result.append([list[0]] + s)
+    def dfs(self, path, res, n, nums):
+        res.append(path)
+        for i in range(n, len(nums)):
+            self.dfs(path + [nums[i]], res, i+1, nums)
 
-        return result
+
 
 if  __name__ == '__main__':
     data = [
@@ -28,7 +28,11 @@ if  __name__ == '__main__':
 
     for item in data:
         nums, answer = item
-        result = Solution().subset_recursion(nums)
+        result = Solution().subsets_dfs(nums)
         print(nums)
-        print('Result:')
+        print('Result (recursively)')
+        print(result)
+
+        print('Result (Iteratively)')
+        result = Solution().subsets(nums)
         print(result)
